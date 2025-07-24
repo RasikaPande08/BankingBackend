@@ -8,6 +8,7 @@ import javax.sound.sampled.AudioSystem;
 import javax.sound.sampled.LineUnavailableException;
 import javax.sound.sampled.TargetDataLine;
 
+import com.example.banking.model.Account;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.vosk.Model;
 import org.vosk.Recognizer;
@@ -108,7 +109,9 @@ public class FinancialVoiceIVR {
 
             if (!customerId.isBlank()) {
                 speak("Thank you.");
-                speak(accountDetailsController.getBal(customerId));
+                Account account = accountDetailsController.getBal(customerId.toString());
+                String balance = account.getBalance();
+                speak("Your balance is ₹" + balance);
 
                 return;
             } else {

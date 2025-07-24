@@ -9,6 +9,7 @@ import org.springframework.stereotype.Component;
 public class SmsRequest {
     private String phoneNumber;
     private String message;
+    private String customerId;
 
     public String getPhoneNumber() {
         return phoneNumber;
@@ -24,5 +25,13 @@ public class SmsRequest {
 
     public void setMessage(String message) {
         this.message = message;
+    }
+
+    public String getCustomerId() {
+        return customerId;
+    }
+
+    public void setCustomerId(String customerId) {
+        this.customerId = customerId;
     }
 }

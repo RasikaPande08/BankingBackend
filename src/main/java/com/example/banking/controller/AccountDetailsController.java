@@ -8,6 +8,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.server.ResponseStatusException;
 
 import java.util.Arrays;
 import java.util.List;
@@ -16,42 +17,50 @@ import java.util.Optional;
 @RestController
 @RequestMapping("/api/accountdetails")
 public class AccountDetailsController {
-	@Autowired
-	AccountRepository accountRepository;
+    @Autowired
+    AccountRepository accountRepository;
 
-	@GetMapping
-	public List<Account> getAll() {
-		return Arrays.asList(new Account());
-	}
+    @GetMapping
+    public List<Account> getAll() {
+        return Arrays.asList(new Account());
+    }
 
-	@GetMapping("/verify/{customerid}/{password}")
-	public ResponseEntity<?> getVerifyUser(@PathVariable String customerid,
-										   @PathVariable String password) {
-		System.out.println("hiiiiiiii,{} {}"+customerid+"....."+password);
-		Optional<Account> account = accountRepository.findByCustomeridAndPassword(customerid, password);
+    @GetMapping("/{customerid}")
+    public Account getBal(@PathVariable String customerid) {
+        Optional<Account> account = accountRepository.findByCustomerid(customerid);
+        if (account.isEmpty()) {
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Customer not found");
+        }
+        return account.get(); // Returns the entire Account object, including balance
+    }
 
-		if (account.isEmpty()) {
-			return ResponseEntity.status(HttpStatus.UNAUTHORIZED)
-					.body("❌ Invalid credentials: customer ID or password is incorrect.");
-		}
+    @GetMapping("/verify/{customerid}/{password}")
+    public ResponseEntity<?> getVerifyUser(@PathVariable String customerid,
+                                           @PathVariable String password) {
+        System.out.println("hiiiiiiii,{} {}" + customerid + "....." + password);
+        Optional<Account> account = accountRepository.findByCustomeridAndPassword(customerid, password);
 
-		return ResponseEntity.ok("Valid User");
-	}
+        if (account.isEmpty()) {
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED)
+                    .body("❌ Invalid credentials: customer ID or password is incorrect.");
+        }
 
-	@PostMapping("/verify")
-	public ResponseEntity<String> verifyUser(@RequestBody UserVerificationRequest request) {
-		Optional<Account> accountOpt = accountRepository.findByCustomeridAndPassword(request.getCustomerId(),request.getPassword());
-		System.out.println("hiiiiiiii,{} {}"+request.getCustomerId()+"....."+request.getPassword());
-		if (accountOpt.isEmpty()) {
-			return ResponseEntity.status(HttpStatus.NOT_FOUND).body("❌ Customer not found.");
-		}
+        return ResponseEntity.ok("Valid User");
+    }
 
-		Account account = accountOpt.get();
-		if (!account.getPassword().equals(request.getPassword())) {
-			return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("🚫 Invalid credentials.");
-		}
+    @PostMapping("/verify")
+    public ResponseEntity<String> verifyUser(@RequestBody UserVerificationRequest request) {
+        Optional<Account> accountOpt = accountRepository.findByCustomeridAndPassword(request.getCustomerId(), request.getPassword());
+        System.out.println("hiiiiiiii,{} {}" + request.getCustomerId() + "....." + request.getPassword());
+        if (accountOpt.isEmpty()) {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("❌ Customer not found.");
+        }
 
-		return ResponseEntity.ok("✅ Verification successful for " + request.getCustomerId());
-	}
+        Account account = accountOpt.get();
+        if (!account.getPassword().equals(request.getPassword())) {
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("🚫 Invalid credentials.");
+        }
 
+        return ResponseEntity.ok("✅ Verification successful for " + request.getCustomerId());
+    }
 }

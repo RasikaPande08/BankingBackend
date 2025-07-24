@@ -14,13 +14,13 @@ public class SmsRecord {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    private String recipientNumber;
+    private String phoneNumber;
     private String message;
     private String status;
     private LocalDateTime timestamp;
 
     public SmsRecord(String recipientNumber, String message, String status, LocalDateTime timestamp) {
-        this.recipientNumber = recipientNumber;
+        this.phoneNumber = recipientNumber;
         this.message = message;
         this.status = status;
         this.timestamp = timestamp;

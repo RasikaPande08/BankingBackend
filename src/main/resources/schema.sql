@@ -20,3 +20,10 @@ CREATE TABLE transactions (
     PRIMARY KEY (transaction_id)
 );
 
+CREATE TABLE sms_record (
+    id BIGINT PRIMARY KEY AUTO_INCREMENT,
+    phone_number VARCHAR(20) NOT NULL,
+    message TEXT NOT NULL,
+    status VARCHAR(50),
+    timestamp TIMESTAMP
+);
