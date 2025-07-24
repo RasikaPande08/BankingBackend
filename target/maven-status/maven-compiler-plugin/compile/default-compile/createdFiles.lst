@@ -1,0 +1,15 @@
+com\example\banking\model\KYC.class
+com\example\banking\repository\AccountRepository.class
+com\example\banking\model\Investment.class
+com\example\banking\model\Account.class
+com\example\banking\controller\voiceController.class
+com\example\banking\model\Transaction.class
+com\example\banking\model\PersonalDetails.class
+com\example\banking\controller\KYCController.class
+com\example\banking\controller\InvestmentController.class
+com\example\banking\controller\AccountDetailsController.class
+com\example\banking\repository\TransactionRepository.class
+com\example\banking\controller\TransactionController.class
+com\example\banking\controller\PersonalDetailsController.class
+com\example\banking\BankingApplication.class
+com\example\banking\controller\FinancialVoiceIVR.class
