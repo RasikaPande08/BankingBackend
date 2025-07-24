@@ -63,4 +63,15 @@ public class AccountDetailsController {
 
         return ResponseEntity.ok("✅ Verification successful for " + request.getCustomerId());
     }
+
+    @GetMapping("/verify/{customerId}")
+	public ResponseEntity<String> verifyUser(@PathVariable String customerId) {
+		Optional<Account> accountOpt = accountRepository.findByCustomerid(customerId);
+		System.out.println("hiiiiiiii,{} {}"+customerId);
+		if (accountOpt.isEmpty()) {
+			return ResponseEntity.status(HttpStatus.NOT_FOUND).body("❌ Customer not found.");
+		}
+
+		return ResponseEntity.ok("Verification successful for " + customerId);
+	}
 }
