@@ -4,6 +4,7 @@ import java.math.BigDecimal;
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -43,12 +44,19 @@ public class voiceController {
 
         return ResponseEntity.ok(account.get().getBalance());
     }
+    
+    @GetMapping("/{customerid}/bal")
+	public ResponseEntity<?> getBalance(@PathVariable String customerid) {
+		
+		Optional<Account> account = accountRepository.findByCustomerid(customerid);
+		if (account.isEmpty()) {
+			return ResponseEntity.status(HttpStatus.UNAUTHORIZED)
+	                .body("❌ Invalid credentials: customer ID or password is incorrect.");
+	    }
 
-    @GetMapping("/ivr")
-    public void startIVR() throws Exception {
-        FinancialVoiceIVR financialVoiceIVR = new FinancialVoiceIVR();
-        financialVoiceIVR.start();
+		return ResponseEntity.ok(account.get().getBalance());
     }
+
 
     @GetMapping("/{customerid}/{password}/lastfive")
     public ResponseEntity<?> getLastFiveAmounts(@PathVariable String customerid,
@@ -70,6 +78,27 @@ public class voiceController {
         return ResponseEntity.ok(amounts);
 
     }
+    
+    @GetMapping("/{customerid}/lastfive")
+	public ResponseEntity<?> getLastFiveTransaction(@PathVariable String customerid) {
+	   
+	    Optional<Account> account = accountRepository.findByCustomerid(customerid);
+
+	    if (account.isEmpty()) {
+	        return ResponseEntity.status(HttpStatus.UNAUTHORIZED)
+	                .body("❌ Invalid credentials: customer ID or password is incorrect.");
+	    }
+
+	    List<String> amounts = transactionRepository
+	            .findByAccountNumber(account.get().getAccountNumber())
+	            .stream()
+	            .map(txn -> txn.getAmount().toPlainString())
+	            .collect(Collectors.toList());
+
+
+	    return ResponseEntity.ok(amounts);
+
+	}
 
     @PostMapping("/transfer/{fromAcc}/{toAcc}/{amount}")
     public ResponseEntity<?> transferFunds(@PathVariable String fromAcc,
