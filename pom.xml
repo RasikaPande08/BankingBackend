@@ -43,50 +43,14 @@
             <scope>provided</scope>
             <optional>true</optional>
         </dependency>
-        <dependency>
-            <groupId>net.sourceforge.freetts</groupId>
-            <artifactId>freetts</artifactId>
-            <version>1.2.2</version>
-            <scope>system</scope>
-            <systemPath>${project.basedir}/lib/freetts-1.2.2.jar</systemPath>
-        </dependency>
-        <dependency>
-            <groupId>net.sourceforge.freetts</groupId>
-            <artifactId>cmulex</artifactId>
-            <version>1.0</version>
-            <scope>system</scope>
-            <systemPath>${project.basedir}/lib/cmulex-1.0.jar</systemPath>
-        </dependency>
-        <dependency>
-            <groupId>net.sourceforge.freetts</groupId>
-            <artifactId>cmu_us_kal</artifactId>
-            <version>1.0</version>
-            <scope>system</scope>
-            <systemPath>${project.basedir}/lib/cmu_us_kal-1.0.jar</systemPath>
-        </dependency>
-        <dependency>
-            <groupId>org.vosk</groupId>
-            <artifactId>vosk</artifactId>
-            <version>0.3.45-javadoc</version>
-            <scope>system</scope>
-            <systemPath>${project.basedir}/lib/vosk-0.3.45-javadoc.jar</systemPath>
-        </dependency>
+        
         <dependency>
             <groupId>org.springdoc</groupId>
             <artifactId>springdoc-openapi-starter-webmvc-ui</artifactId>
             <version>2.5.0</version>
         </dependency>
 
-        <dependency>
-            <groupId>com.alphacephei</groupId>
-            <artifactId>vosk</artifactId>
-            <version>0.3.45</version>
-        </dependency>
-        <dependency>
-            <groupId>net.java.dev.jna</groupId>
-            <artifactId>jna</artifactId>
-            <version>5.7.0</version>
-        </dependency>
+        
     </dependencies>
 
     <build>
