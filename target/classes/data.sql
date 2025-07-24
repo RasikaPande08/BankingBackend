@@ -1,5 +1,5 @@
-INSERT INTO account VALUES (1001, '001', 'pass123', 'ACC1001', 'Savings', '2025-01-01 10:00:00', '45000.50');
-INSERT INTO account VALUES (1002, '002', 'pass234', 'ACC1002', 'Current', '2025-02-15 11:30:00', '120000.75');
+INSERT INTO account VALUES (1001, '001', '111', 'ACC1001', 'Savings', '2025-01-01 10:00:00', '45000.50');
+INSERT INTO account VALUES (1002, '002', '222', 'ACC1002', 'Current', '2025-02-15 11:30:00', '120000.75');
 INSERT INTO account VALUES (1003, '003', 'pass345', 'ACC1003', 'Savings', '2025-03-20 09:45:00', '8700.00');
 INSERT INTO account VALUES (1004, '004', 'pass456', 'ACC1004', 'Fixed',   '2025-04-05 14:20:00', '250000.00');
 INSERT INTO account VALUES (1005, '005', 'pass567', 'ACC1005', 'Current', '2025-05-12 16:00:00', '33000.85');

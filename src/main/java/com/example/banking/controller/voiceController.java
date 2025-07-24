@@ -22,94 +22,92 @@ import com.example.banking.repository.TransactionRepository;
 @RestController
 @RequestMapping("/api/voice")
 public class voiceController {
-	
-	@Autowired
-	AccountRepository accountRepository;
-	
-	@Autowired
+
+    @Autowired
+    AccountRepository accountRepository;
+
+    @Autowired
     TransactionRepository transactionRepository;
 
-	
-	@GetMapping("/{customerid}/{password}/bal")
-	public ResponseEntity<?> getBal(@PathVariable String customerid,
-            @PathVariable String password) {
-		
-		Optional<Account> account = accountRepository.findByCustomeridAndPassword(customerid, password);
-		if (account.isEmpty()) {
-	        return ResponseEntity.status(HttpStatus.UNAUTHORIZED)
-	                .body("❌ Invalid credentials: customer ID or password is incorrect.");
-	    }
-		
-		
 
-		return ResponseEntity.ok(account.get().getBalance());
+    @GetMapping("/{customerid}/{password}/bal")
+    public ResponseEntity<?> getBal(@PathVariable String customerid,
+                                    @PathVariable String password) {
+
+        Optional<Account> account = accountRepository.findByCustomeridAndPassword(customerid, password);
+        if (account.isEmpty()) {
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED)
+                    .body("❌ Invalid credentials: customer ID or password is incorrect.");
+        }
+
+
+        return ResponseEntity.ok(account.get().getBalance());
     }
-	
-	@GetMapping("/ivr")
-	public void startIVR() throws Exception {
-		FinancialVoiceIVR financialVoiceIVR = new FinancialVoiceIVR();
-		financialVoiceIVR.start();
+
+    @GetMapping("/ivr")
+    public void startIVR() throws Exception {
+        FinancialVoiceIVR financialVoiceIVR = new FinancialVoiceIVR();
+        financialVoiceIVR.start();
     }
-	
-	@GetMapping("/{customerid}/{password}/lastfive")
-	public ResponseEntity<?> getLastFiveAmounts(@PathVariable String customerid,
-	                                            @PathVariable String password) {
-	   
-	    Optional<Account> account = accountRepository.findByCustomeridAndPassword(customerid, password);
 
-	    if (account.isEmpty()) {
-	        return ResponseEntity.status(HttpStatus.UNAUTHORIZED)
-	                .body("❌ Invalid credentials: customer ID or password is incorrect.");
-	    }
+    @GetMapping("/{customerid}/{password}/lastfive")
+    public ResponseEntity<?> getLastFiveAmounts(@PathVariable String customerid,
+                                                @PathVariable String password) {
 
-	    List<BigDecimal> amounts = transactionRepository
-	            .findByAccountNumber(account.get().getAccountNumber())
-	            .stream()
-	            .map(Transaction::getAmount)
-	            .toList();
+        Optional<Account> account = accountRepository.findByCustomeridAndPassword(customerid, password);
 
-	    return ResponseEntity.ok(amounts);
+        if (account.isEmpty()) {
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED)
+                    .body("❌ Invalid credentials: customer ID or password is incorrect.");
+        }
 
-	}
-	
-	@PostMapping("/transfer/{fromAcc}/{toAcc}/{amount}")
-	public ResponseEntity<?> transferFunds(@PathVariable String fromAcc,
-	                                       @PathVariable String toAcc,
-	                                       @PathVariable BigDecimal amount) {
-	    Optional<Account> senderOpt = accountRepository.findByAccountNumber(fromAcc);
+        List<BigDecimal> amounts = transactionRepository
+                .findByAccountNumber(account.get().getAccountNumber())
+                .stream()
+                .map(Transaction::getAmount)
+                .toList();
 
-	    if (senderOpt.isEmpty()) {
-	        return ResponseEntity.status(HttpStatus.NOT_FOUND)
-	                .body("❌ sender accounts not found.");
-	    }
+        return ResponseEntity.ok(amounts);
 
-	    Account sender = senderOpt.get();
+    }
 
-	    BigDecimal senderBalance = new BigDecimal(sender.getBalance());
-	    if (senderBalance.compareTo(amount) < 0) {
-	        return ResponseEntity.status(HttpStatus.BAD_REQUEST)
-	                .body("🚫 Insufficient balance in sender account.");
-	    }
+    @PostMapping("/transfer/{fromAcc}/{toAcc}/{amount}")
+    public ResponseEntity<?> transferFunds(@PathVariable String fromAcc,
+                                           @PathVariable String toAcc,
+                                           @PathVariable BigDecimal amount) {
+        Optional<Account> senderOpt = accountRepository.findByAccountNumber(fromAcc);
 
-	    // 🧮 Update balances
-	    sender.setBalance(senderBalance.subtract(amount).toString());
+        if (senderOpt.isEmpty()) {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND)
+                    .body("❌ sender accounts not found.");
+        }
 
-	    accountRepository.save(sender);
+        Account sender = senderOpt.get();
 
-	    // 💾 Log transaction (simplified, can create two entries if needed)
-	    Transaction txn = new Transaction();
-	    txn.setAccountNumber(fromAcc);
-	    txn.setTransactionType("Transfer");
-	    txn.setAmount(amount);
-	    txn.setTransactionDate(LocalDateTime.now());
-	    txn.setDescription("Transfer to " + toAcc);
-	    txn.setStatus("Success");
+        BigDecimal senderBalance = new BigDecimal(sender.getBalance());
+        if (senderBalance.compareTo(amount) < 0) {
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST)
+                    .body("🚫 Insufficient balance in sender account.");
+        }
 
-	    transactionRepository.save(txn);
+        // 🧮 Update balances
+        sender.setBalance(senderBalance.subtract(amount).toString());
 
-	    return ResponseEntity.ok("✅ ₹" + amount + " transferred from " + fromAcc + " to " + toAcc);
-	}
+        accountRepository.save(sender);
 
+        // 💾 Log transaction (simplified, can create two entries if needed)
+        Transaction txn = new Transaction();
+        txn.setAccountNumber(fromAcc);
+        txn.setTransactionType("Transfer");
+        txn.setAmount(amount);
+        txn.setTransactionDate(LocalDateTime.now());
+        txn.setDescription("Transfer to " + toAcc);
+        txn.setStatus("Success");
+
+        transactionRepository.save(txn);
+
+        return ResponseEntity.ok("✅ ₹" + amount + " transferred from " + fromAcc + " to " + toAcc);
+    }
 
 
 }

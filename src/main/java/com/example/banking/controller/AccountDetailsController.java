@@ -15,19 +15,19 @@ import java.util.Optional;
 public class AccountDetailsController {
 	@Autowired
 	AccountRepository accountRepository;
-	
-    @GetMapping
-    public List<Account> getAll() {
-        return Arrays.asList(new Account());
-    }
-    
-    public String getBal(String customerid) {
-		
+
+	@GetMapping
+	public List<Account> getAll() {
+		return Arrays.asList(new Account());
+	}
+
+	public String getBal(String customerid) {
+
 		Optional<Account> account = accountRepository.findByCustomerid(customerid);
 		if (account.isEmpty()) {
-	        return "❌ Invalid credentials: customer ID or password is incorrect.";
-	    }
+			return "❌ Invalid credentials: customer ID or password is incorrect.";
+		}
 
 		return account.get().getBalance();
-    }
+	}
 }

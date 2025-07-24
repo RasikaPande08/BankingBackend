@@ -10,15 +10,13 @@ import java.util.Arrays;
 import java.util.List;
 
 
-
-
 @RestController
 @RequestMapping("/api/transaction")
 public class TransactionController {
-	
-	@Autowired
-	TransactionRepository transactionRepository ; 
-	
+
+    @Autowired
+    TransactionRepository transactionRepository;
+
 //    @GetMapping
 //    public List<Transaction> getAll() {
 //        return Arrays.asList(new Transaction());

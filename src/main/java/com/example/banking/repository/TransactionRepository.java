@@ -6,7 +6,7 @@ import org.springframework.data.jpa.repository.JpaRepository;
 
 import com.example.banking.model.Transaction;
 
-public interface TransactionRepository extends JpaRepository<Transaction, Long>{
-	List<Transaction> findByAccountNumber(String accountNumber);
+public interface TransactionRepository extends JpaRepository<Transaction, Long> {
+    List<Transaction> findByAccountNumber(String accountNumber);
 
 }

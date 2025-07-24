@@ -11,9 +11,9 @@ import lombok.*;
 @AllArgsConstructor
 /*
  * public class Transaction {
- * 
+ *
  * @Id
- * 
+ *
  * @GeneratedValue(strategy = GenerationType.IDENTITY) private Long cin; private
  * String date; private String transactionRef; // it will give description of
  * what transation has been done private String transactionType; private String
@@ -47,34 +47,34 @@ public class Transaction {
     private String status; // e.g., Success, Pending
 
     public void setTransactionId(Long transactionId) {
-		this.transactionId = transactionId;
-	}
+        this.transactionId = transactionId;
+    }
 
-	public void setAccountNumber(String accountNumber) {
-		this.accountNumber = accountNumber;
-	}
+    public void setAccountNumber(String accountNumber) {
+        this.accountNumber = accountNumber;
+    }
 
-	public void setTransactionType(String transactionType) {
-		this.transactionType = transactionType;
-	}
+    public void setTransactionType(String transactionType) {
+        this.transactionType = transactionType;
+    }
 
-	public void setAmount(BigDecimal amount) {
-		this.amount = amount;
-	}
+    public void setAmount(BigDecimal amount) {
+        this.amount = amount;
+    }
 
-	public void setTransactionDate(LocalDateTime transactionDate) {
-		this.transactionDate = transactionDate;
-	}
+    public void setTransactionDate(LocalDateTime transactionDate) {
+        this.transactionDate = transactionDate;
+    }
 
-	public void setDescription(String description) {
-		this.description = description;
-	}
+    public void setDescription(String description) {
+        this.description = description;
+    }
 
-	public void setStatus(String status) {
-		this.status = status;
-	}
+    public void setStatus(String status) {
+        this.status = status;
+    }
 
-	// Getters only (if immutability is desired via Lombok)
+    // Getters only (if immutability is desired via Lombok)
     public Long getTransactionId() {
         return transactionId;
     }
