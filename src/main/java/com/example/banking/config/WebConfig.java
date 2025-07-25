@@ -13,7 +13,7 @@ public class WebConfig {
             @Override
             public void addCorsMappings(CorsRegistry registry) {
                 registry.addMapping("/**") // use /** to catch all paths
-                        .allowedOrigins("http://localhost:5173")
+                        .allowedOriginPatterns("*")
                         .allowedMethods("*") // allow all methods (including OPTIONS)
                         .allowedHeaders("*")
                         .allowCredentials(true);
