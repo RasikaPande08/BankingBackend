@@ -9,6 +9,13 @@ INSERT INTO account VALUES (1008, '008', 'pass890', 'ACC1008', 'Current', '2025-
 INSERT INTO account VALUES (1009, '009', 'pass901', 'ACC1009', 'Savings', '2025-09-25 13:30:00', '76550.00');
 INSERT INTO account VALUES (1010, '010', 'pass012', 'ACC1010', 'Fixed',   '2025-10-10 19:10:00', '200000.00');
 
+INSERT INTO Person (name, cin, customerId) VALUES 
+('Aarav Mehta', '1001', '00123'),
+('Raghav Patel', '1002', '00234'),
+('Ravi Deshmukh', '1003', '00356'),
+('Priya Menon', '1004', '00445'),
+('Karan Verma', '1005', '00578`');
+
 
 INSERT INTO transactions (accountNumber, transaction_type, amount, transaction_date, description, status)
 VALUES ('ACC1001', 'Credit', 7500.00, '2025-07-01 09:00:00', 'Monthly Salary', 'Success');

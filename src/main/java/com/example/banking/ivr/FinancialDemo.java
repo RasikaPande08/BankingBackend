@@ -20,6 +20,8 @@ public class FinancialDemo {
 
 	@Autowired
 	static HttpCallService httpCallService = new HttpCallService();
+	
+	static String domain = "https://financial-banking-878612543973.europe-west1.run.app/api";
 
 	public static void main(String[] args) throws Exception {
 		System.setProperty("freetts.voices", "com.sun.speech.freetts.en.us.cmu_us_kal.KevinVoiceDirectory");
@@ -27,6 +29,7 @@ public class FinancialDemo {
 		voice.allocate();
 
 		String modelPath = "C:\\Users\\neha1\\vosk-model-small-en-us-0.15";
+		//String modelPath = "\\BankingBackend\\model\\vosk-model-small-en-us-0.15";
 		Model model = new Model(modelPath);
 		AudioFormat format = new AudioFormat(16000, 16, 1, true, false);
 
@@ -106,7 +109,7 @@ public class FinancialDemo {
 
 	private static void handleBalanceEnquiry(Model model, TargetDataLine mic, String customerId) throws Exception {
 
-		String url = "http://localhost:8080/api/voice/" + customerId + "/bal";
+		String url = domain+"/voice/" + customerId + "/bal";
 		ResponseEntity<String> response = httpCallService.get(url, String.class);
 		speak(response.getBody());
 
@@ -115,7 +118,7 @@ public class FinancialDemo {
 	}
 
 	private static void handleLastTransactions(Model model, TargetDataLine mic, String customerId) throws Exception {
-		String url = "http://localhost:8080/api/voice/" + customerId + "/lastfive";
+		String url = domain+"/voice/" + customerId + "/lastfive";
 		ResponseEntity<List> response = httpCallService.get(url, List.class);
 
 		List<String> strs = response.getBody();
@@ -137,7 +140,7 @@ public class FinancialDemo {
 		speak("Please say your pin.");
 		String pin = listenForText(model, mic);
 		if (verifyPin(customerId, pin)) {
-			String url = "http://localhost:8080/api/voice/transfer/" + customerId + "/" + recipientAccount + "/"
+			String url = domain+"/voice/transfer/" + customerId + "/" + recipientAccount + "/"
 					+ requestedAmount;
 			ResponseEntity<String> response = httpCallService.post(url, "", String.class);
 			speak(response.getBody());
@@ -266,19 +269,19 @@ public class FinancialDemo {
 	private static boolean passwordAuthentication(Model model, TargetDataLine mic, String customerId) throws Exception {
 		speak("Please say your password.");
 		String password = listenForText(model, mic);
-		String url = "http://localhost:8080/api/accountdetails/verify/" + customerId + "/" + password;
+		String url = domain+"/accountdetails/verify/" + customerId + "/" + password;
 		ResponseEntity<String> response = httpCallService.get(url, String.class);
 		return true;
 	}
 
 	private static boolean verifyPin(String customerId, String pin) throws Exception {
-		String url = "http://localhost:8080/api/accountdetails/verify/" + customerId + "/" + pin;
+		String url = domain+"/accountdetails/verify/" + customerId + "/" + pin;
 		ResponseEntity<String> response = httpCallService.get(url, String.class);
 		return true;
 	}
 
 	private static void verifyCustomer(String customerId) throws Exception {
-		String url = "http://localhost:8080/api/accountdetails/verify/" + customerId;
+		String url = domain+"/accountdetails/verify/" + customerId;
 		ResponseEntity<String> response = httpCallService.get(url, String.class);
 		System.out.println(response.getBody());
 		speak(response.getBody());

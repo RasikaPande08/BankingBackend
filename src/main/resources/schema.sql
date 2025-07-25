@@ -27,3 +27,10 @@ CREATE TABLE sms_record (
     status VARCHAR(50),
     timestamp TIMESTAMP
 );
+
+CREATE TABLE Person (
+    name VARCHAR(100),
+    cin VARCHAR(50),
+    customerid VARCHAR(50),
+    PRIMARY KEY (cin)
+);
